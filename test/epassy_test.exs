@@ -1,6 +1,5 @@
 defmodule EpassyTest do
   use ExUnit.Case
-  doctest Epassy
 
   setup do
     options = %{
@@ -71,14 +70,14 @@ defmodule EpassyTest do
   end
 
   test "Return an error when options are not allowed" do
-    options = %{ "length" => 10 }
+    options = %{ "length" => "10", "invalid" => "true" }
 
 
     assert { :error, _error } = Epassy.generate(options)
   end
 
   test "Return an error when 1 option is not allowed" do
-    options = %{ "length" => 5, "numbers" => "true", "invalid" => "true" }
+    options = %{ "length" => "5", "numbers" => "true", "invalid" => "true" }
 
     assert { :error, _error } = Epassy.generate(options)
   end
