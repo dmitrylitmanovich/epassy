@@ -81,4 +81,83 @@ defmodule EpassyTest do
 
     assert { :error, _error } = Epassy.generate(options)
   end
+
+  test "Return a string with uppercase", %{ options_type: options } do
+    options_with_uppercase = %{
+      "length" => "10",
+      "numbers" => "false",
+      "uppercase" => "true",
+      "symbols" => "false"
+    }
+
+    { :ok, result } = Epassy.generate(options_with_uppercase)
+
+    assert String.contains?(result, options.uppercase)
+
+    refute String.contains?(result, options.numbers)
+    refute String.contains?(result, options.symbols)
+  end
+
+  test "Return a string with numbers", %{ options_type: options } do
+    options_with_numbers = %{
+      "length" => "10",
+      "numbers" => "true",
+      "uppercase" => "false",
+      "symbols" => "false"
+    }
+
+    { :ok, result } = Epassy.generate(options_with_numbers)
+
+    assert String.contains?(result, options.numbers)
+
+    refute String.contains?(result, options.uppercase)
+    refute String.contains?(result, options.symbols)
+  end
+
+  test "Return a string with uppercase and numbers", %{ options_type: options } do
+    options_included = %{
+      "length" => "10",
+      "numbers" => "true",
+      "uppercase" => "true",
+      "symbols" => "false"
+    }
+
+    { :ok, result } = Epassy.generate(options_included)
+
+    assert String.contains?(result, options.numbers)
+    assert String.contains?(result, options.uppercase)
+
+    refute String.contains?(result, options.symbols)
+  end
+
+  test "Return a string with symbols", %{ options_type: options } do
+    options_with_symbols = %{
+      "length" => "10",
+      "numbers" => "false",
+      "uppercase" => "false",
+      "symbols" => "true"
+    }
+
+    { :ok, result } = Epassy.generate(options_with_symbols)
+
+    assert String.contains?(result, options.symbols)
+
+    refute String.contains?(result, options.uppercase)
+    refute String.contains?(result, options.numbers)
+  end
+
+  test "Return a string with everything", %{ options_type: options } do
+    options_with_all = %{
+      "length" => "10",
+      "numbers" => "true",
+      "uppercase" => "true",
+      "symbols" => "true"
+    }
+
+    { :ok, result } = Epassy.generate(options_with_all)
+
+    assert String.contains?(result, options.symbols)
+    assert String.contains?(result, options.uppercase)
+    assert String.contains?(result, options.symbols)
+  end
 end

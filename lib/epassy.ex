@@ -13,6 +13,7 @@ defmodule Epassy do
   """
 
   @allowed_options [:length, :numbers, :uppercase, :symbols]
+  @symbols "!#$%&()*+_,./@:;<=>?[]{|}^~`"
 
   @doc """
   Generates a password for given options:
@@ -95,6 +96,23 @@ defmodule Epassy do
 
   defp get(:lowercase_letter) do
     <<Enum.random(?a..?z)>>
+  end
+
+  defp get(:uppercase) do
+    <<Enum.random(?A..?Z)>>
+  end
+
+  defp get(:numbers) do
+    Enum.random(0..9)
+    |> Integer.to_string()
+  end
+
+  defp get(:symbols) do
+    symbols =
+      @symbols
+      |> String.split("", trim: true)
+
+    Enum.random(symbols)
   end
 
   defp generate_random_strings(length, options) do
